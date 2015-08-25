@@ -26,7 +26,15 @@ rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 RUN wget http://download.gluster.org/pub/gluster/glusterfs/3.7/LATEST/CentOS/glusterfs-epel.repo -O /etc/yum.repos.d/glusterfs-epel.repo
 
+
+
 RUN yum -y update
+
+# Enabling EPEL repo for userspace-rcu 
+
+RUN yum --setopt=tsflags=nodocs -y install epel-release
+#RUN wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+#RUN rpm -Uvh epel-release-7*.rpm
 
 RUN yum --setopt=tsflags=nodocs -y install glusterfs glusterfs-server glusterfs-fuse glusterfs-geo-replication glusterfs-cli glusterfs-api
 RUN yum --setopt=tsflags=nodocs -y install attr
