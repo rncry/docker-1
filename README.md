@@ -37,7 +37,7 @@ This command will build the docker image from the Dockerfile you just cloned and
 Once the image is built in either of the above two steps, we can now run the container with gluster daemon running. For this run the command:
 
 ~~~
-$ docker run --privileged -ti -p 22 image name
+$ docker run --privileged -ti image name
 ~~~
 
 ( is either gluster-fedora or gluster-centos as per the configurations so far)
@@ -53,29 +53,11 @@ $ docker ps -a
 
 CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES
 d273cc739c9d gluster/gluster-fedora:latest "/usr/sbin/init" 3 minutes ago Up 3 minutes 49157/tcp, 49161/tcp, 49158/tcp, 38466/tcp, 8080/tcp, 2049/tcp, 24007/tcp, 49152/tcp, 49162/tcp, 49156/tcp, 6010/tcp, 111/tcp, 49154/tcp, 443/tcp, 49160/tcp, 38468/tcp, 49159/tcp, 245/tcp, 49153/tcp, 6012/tcp, 38469/tcp, 6011/tcp, 38465/tcp, 0.0.0.0:49153->22/tcp angry_morse
-Note the Container ID of the image and inspect the image to get the IP address. Say the Container ID of the image is d273cc739c9d , so to get the IP do:
-$ docker inspect d273cc739c9d
+Note the Container ID of the image 
 
-"GlobalIPv6Address": "",
-"GlobalIPv6PrefixLen": 0,
-"IPAddress": "172.17.0.2",
-"IPPrefixLen": 16,
-"IPv6Gateway": "",
-"LinkLocalIPv6Address": "fe80::42:acff:fe11:2",
-"LinkLocalIPv6PrefixLen": 64,
-The IP address is “172.17.0.2”
+Now run a shell inside the container:
 
-~~~
-Once we have got the IP, ssh into the container:
-
-~~~
-
-$ ssh root@IP address
-The password will be ‘password’ as specified in the dockerfile. Make sure the password is changed immediately.
-[ ~]# ssh root@172.17.0.2
-root@172.17.0.2's password:
-System is booting up. See pam_nologin(8)
-Last login: Mon May 4 06:22:34 2015 from 172.17.42.1
+$ docker exec -it d273cc739c9d /bin/bash
 -bash-4.3# ps aux |grep glusterd
 root 34 0.0 0.0 448092 15800 ? Ssl 06:01 0:00 /usr/sbin/glusterd -p /var/run/glusterd.pid
 root 159 0.0 0.0 112992 2224 pts/0 S+ 06:22 0:00 grep --color=auto glusterd
